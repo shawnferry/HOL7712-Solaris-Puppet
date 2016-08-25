@@ -1,0 +1,54 @@
+set nocompatible
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Make vim more puppet friendly
+Plugin 'rodjek/vim-puppet'
+
+" Automatic text alignment
+Plugin 'godlygeek/tabular'
+
+" Automatic syntax checking
+Plugin 'scrooloose/syntastic'
+
+"
+" Make Plugins available
+"
+call vundle#end()
+
+filetype plugin indent on
+
+
+" color column
+set cc=80
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+
+" Extra Whitespace and Tabs highlighting
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$\| \+\ze\t/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" set recommended new user settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Remove this option in prodution. It disables complaints about
+" not defining classes in their own files.
+let g:syntastic_puppet_puppetlint_args = "--no-autoloader_layout-check"
+
+set number
+syntax enable
