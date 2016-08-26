@@ -1,0 +1,3 @@
+create -b
+set brand=solaris
+set file-mac-profile=fixed-configuration
