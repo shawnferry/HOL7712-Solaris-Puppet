@@ -8,13 +8,13 @@ We will be working in terminal for this lab using the Vim editor. The demo steps
 
 1. > cd \/root
 
- All commands in the setup steps are executed from root's home directory. \/root
+  All commands in the setup steps are executed from root's home directory. \/root
 
 ## View setup.pp \(Command 1\)
 
 1. > vi HOL7712-Solaris-Puppet\/setup.pp
 
- We are not making any changes to setup.pp, breifly note the appearance of the file at this time. This fairly simple manifest contains a set of resource definitions used to bring a fresh system into the starting state for the lab.![](/gitbook/images/SETUP-002-setup-before.png)
+  We are not making any changes to setup.pp, breifly note the appearance of the file at this time. This fairly simple manifest contains a set of resource definitions used to bring a fresh system into the starting state for the lab.![](/gitbook/images/SETUP-002-setup-before.png)
 
 ## Apply the setup.pp manifest \(Command 2\)
 
@@ -26,101 +26,101 @@ Puppet informs us of the changes it is making as it goes.
 
 1. Set variables
 
- ```ruby
+  ```ruby
 
- $lab_homedir = '/root'
+  $lab_homedir = '/root'
 
- $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
+  $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 
- ```
+  ```
 
 2. Install pacakges via the pacakge Solaris pkg and a gem via the gem provider
 
- ```ruby
+  ```ruby
 
- $packages = [ 'git', 'editor/vim' ]
+  $packages = [ 'git', 'editor/vim' ]
 
- package { $packages:
+  package { $packages:
 
- ensure => present
+   ensure => present
 
- }
+  }
 
- # Install the puppet-lint gem via the package type with the gem provider
+  # Install the puppet-lint gem via the package type with the gem provider
 
- package { 'puppet-lint':
+  package { 'puppet-lint':
 
- ensure => present,
+   ensure   => present,
 
- provider => 'gem';
+   provider => 'gem';
 
- }
+  }
 
- ```
+  ```
 
 3. Modify and copy .dotfiles, create variaous directories
 
- ```ruby
+  ```ruby
 
- # Make puppet-lint available on our path
+  # Make puppet-lint available on our path
 
- file_line { 'ruby_bin_path':
+  file_line { 'ruby_bin_path':
 
- path => "${lab_homedir}/.profile",
+   path => "${lab_homedir}/.profile",
 
- line => 'export PATH=$PATH:/usr/ruby/2.1/bin';
+   line => 'export PATH=$PATH:/usr/ruby/2.1/bin';
 
- }
+  }
 
- # Copy the lab .vimrc to /root
+  # Copy the lab .vimrc to /root
 
- file {
+  file {
 
- "${lab_homedir}/.vimrc":
+   "${lab_homedir}/.vimrc":
 
- ensure => present,
+     ensure => present,
 
- source => "${labdir}/labfiles/vimrc";
+     source => "${labdir}/labfiles/vimrc";
 
- }
+  }
 
- ```
+  ```
 
 4. Install a vim plugin manager and a number of plugins
 
- ```ruby
+  ```ruby
 
- exec { 'vundle install':
+  exec { 'vundle install':
 
- command => "/usr/bin/git clone \
+   command     => "/usr/bin/git clone \
 
- https://github.com/VundleVim/Vundle.vim.git \
+     https://github.com/VundleVim/Vundle.vim.git \
 
- ${lab_homedir}/.vim/bundle/Vundle.vim",
+     ${lab_homedir}/.vim/bundle/Vundle.vim",
 
- creates => "${lab_homedir}/.vim/bundle/Vundle.vim",
+   creates     => "${lab_homedir}/.vim/bundle/Vundle.vim",
 
- environment => $env,
+   environment => $env,
 
- before => Exec['vundle plugins'];
+   before      => Exec['vundle plugins'];
 
- }
+  }
 
- # Install Vundle Plugins
+  # Install Vundle Plugins
 
- # This is not a good example
+  # This is not a good example
 
- exec { 'vundle plugins':
+  exec { 'vundle plugins':
 
- command => '/usr/bin/vim -i NONE -c VundleInstall -c quitall',
+   command     => '/usr/bin/vim -i NONE -c VundleInstall -c quitall',
 
- creates => "${lab_homedir}/.vim/bundle/vim-puppet",
+   creates     => "${lab_homedir}/.vim/bundle/vim-puppet",
 
- environment => $env;
+   environment => $env;
 
- }
+  }
 
- ```
+  ```
 
 ### Restart your Shell
 
@@ -146,11 +146,11 @@ You can attempt to apply the manifest directly
 
 > puppet apply invalid.pp
 
->
+> 
 
 > Error: Could not parse for environment production: Syntax error at 'ensure'; expected '}' at \/root\/invalid.pp:10 on node puppet-0.us.oracle.com
 
->
+> 
 
 > Error: Could not parse for environment production: Syntax error at 'ensure'; expected '}' at \/root\/invalid.pp:10 on node puppet-0.us.oracle.com
 
@@ -158,11 +158,11 @@ Attempting to apply the manifest may only make sense on a subset of your nodes. 
 
 > puppet parser validate invalid.pp
 
->
+> 
 
 > Error: Could not parse for environment production: Syntax error at 'ensure'; expected '}' at \/root\/invalid.pp:10 on node puppet-0.us.oracle.com
 
->
+> 
 
 > Error: Could not parse for environment production: Syntax error at 'ensure'; expected '}' at \/root\/invalid.pp:10 on node puppet-0.us.oracle.com
 
@@ -192,11 +192,11 @@ Syntastic highlights the error at line 10 of invalid.pp after running `puppet pa
 
 1. To fix the error add the missing ':' after 'git' on line 9 in the screenshot.
 
- ```
+  ```
 
- package { 'git':
+  package { 'git':
 
- ```
+  ```
 
 2. Write the file `ESC :w`
 
@@ -210,7 +210,7 @@ Syntastic highlights the warnings at lines 17 and 18 from automatically executin
 
 1. To clear the warnings add a new parameter on the last line of the resource
 
- `lint => 'fixed',`
+  `lint => 'fixed',`
 
 2. As you type =&gt; the whole block of code should be aligned for you automatically.
 
@@ -219,5 +219,4 @@ Syntastic highlights the warnings at lines 17 and 18 from automatically executin
 4. The warning indicators are cleared
 
 ![](/gitbook/images/SETUP-006.2-lint-after.png)
-
 
