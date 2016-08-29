@@ -2,7 +2,7 @@
 
 We will be working in terminal for this lab using the Vim editor. The demo steps will be performed in a terminal that very closely matches the screenshots used in this document. The appearance of your system should be close to those shown here.
 
-![](/gitbook/images/SETUP-001-setup-steps.png)
+![](/images/SETUP-001-setup-steps.png)
 
 ## Change to root's home directory
 
@@ -14,7 +14,7 @@ We will be working in terminal for this lab using the Vim editor. The demo steps
 
 1. > vi HOL7712-Solaris-Puppet\/setup.pp
 
-  We are not making any changes to setup.pp, breifly note the appearance of the file at this time. This fairly simple manifest contains a set of resource definitions used to bring a fresh system into the starting state for the lab.![](/gitbook/images/SETUP-002-setup-before.png)
+  We are not making any changes to setup.pp, breifly note the appearance of the file at this time. This fairly simple manifest contains a set of resource definitions used to bring a fresh system into the starting state for the lab.![](/images/SETUP-002-setup-before.png)
 
 ## Apply the setup.pp manifest \(Command 2\)
 
@@ -134,7 +134,7 @@ We have modified the PATH variable for root's shell. We want these changes to ta
 
 Once setup.pp has be applied differences will be apparent in vim. The setup.pp file content is identical but the display now includes line numbers, a column indicator for 80 columns, and syntax highlighting.
 
-![](/gitbook/images/SETUP-003-setup-after.png)
+![](/images/SETUP-003-setup-after.png)
 
 ## Let Puppet Help You
 
@@ -176,7 +176,7 @@ Why is this better?
 
 **[Puppet lint](http://puppet-lint.com/)** checks the manifest against **[The Puppet Language Style Guide](https://docs.puppet.com/guides/style_guide.html "Puppet Style Guide")**, to ensure readiblity and uniformity. The puppet-lint gem installed by setup.pp makes the command `puppet-lint`available on the system.
 
-![](/gitbook/images/SETUP-004-005-parser-lint.png)
+![](/images/SETUP-004-005-parser-lint.png)
 
 ### Is there a better way to validate and lint my puppet code? \(Command 6\)
 
@@ -184,7 +184,7 @@ Yes! and I'm gald you asked.
 
 Setup.pp has added inline validation and linting via syntastic.
 
-![](/gitbook/images/SETUP-006.0-syntax.png)
+![](/images/SETUP-006.0-syntax.png)
 
 ### Fix the syntax error
 
@@ -202,7 +202,7 @@ Syntastic highlights the error at line 10 of invalid.pp after running `puppet pa
 
 3. The error indicator is cleared
 
-![](/gitbook/images/SETUP-006.1-lint-before.png)
+![](/images/SETUP-006.1-lint-before.png)
 
 ### Fix the puppet-lint warnings
 
@@ -218,5 +218,5 @@ Syntastic highlights the warnings at lines 17 and 18 from automatically executin
 
 4. The warning indicators are cleared
 
-![](/gitbook/images/SETUP-006.2-lint-after.png)
+![](/images/SETUP-006.2-lint-after.png)
 
