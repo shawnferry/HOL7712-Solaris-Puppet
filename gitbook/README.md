@@ -1,7 +1,10 @@
-# Automating Oracle Solaris With Puppet [HOL7712]
+# Automating Oracle Solaris With Puppet \[HOL7712\]
 
 ## Oracle OpenWorld 2016
 
-*Cindy Swearingen*, Principal Product Manager, Oracle
-*Shawn Ferry*, Principal Software Engineer, Oracle
-*Cody Herriges*, Engineer (IT), Puppet Labs, Inc
+_Cindy Swearingen_, Principal Product Manager, Oracle
+
+_Shawn Ferry_, Principal Software Engineer, Oracl
+
+_Cody Herriges_, Engineer \(IT\), Puppet Labs, Inc
+
