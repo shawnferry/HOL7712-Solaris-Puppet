@@ -4,5 +4,5 @@
 * [Safe Harbor](safe-harbor.md)
 * [Environment](Environment.md)
 * [Setup](setup/README.md)
-* [Getting Acquainted with the Environment](setup/getting-acquainted-with-the-environment.md)
+  * [Setup Steps](setup/steps.md)
 
