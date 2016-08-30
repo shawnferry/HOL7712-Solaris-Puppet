@@ -11,7 +11,7 @@ $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 # If you need to define proxies here to reach outside resources
 # you must also add them to your environemnt to install gems via the
 # package provider. The package type doesn't recognize environment
-$environment = [
+$env = [
   # HOME needs to be defined for Vundle install
   "HOME=${lab_homedir}",
   #'http_proxy=',
@@ -65,7 +65,7 @@ exec { 'vundle install':
     https://github.com/VundleVim/Vundle.vim.git \
     ${lab_homedir}/.vim/bundle/Vundle.vim",
   creates     => "${lab_homedir}/.vim/bundle/Vundle.vim",
-  environment => $environment,
+  environment => $env,
   before      => Exec['vundle plugins'];
 }
 
@@ -74,7 +74,7 @@ exec { 'vundle install':
 exec { 'vundle plugins':
   command     => '/usr/bin/vim -i NONE -c VundleInstall -c quitall',
   creates     => "${lab_homedir}/.vim/bundle/vim-puppet",
-  environment => $environment;
+  environment => $env;
 }
 
 # Create the manifests directory
