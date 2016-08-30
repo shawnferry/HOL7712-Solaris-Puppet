@@ -10,4 +10,5 @@
     * [Enable Puppet](setup/enable-puppet.md)
 * [Adding an Agent Node](agents/README.md)
     * [Add the Agent](agents/add-the-agent.md)
+* [A simple site.pp](a-simple-sitepp.md)
 
