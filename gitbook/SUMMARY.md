@@ -9,3 +9,5 @@
     * [A Brief Aside on Idempotency](setup/a-brief-aside-on-idempotency.md)
     * [Enable Puppet](setup/enable-puppet.md)
 * [Adding an Agent Node](agents/README.md)
+    * [Add the Agent](agents/add-the-agent.md)
+
