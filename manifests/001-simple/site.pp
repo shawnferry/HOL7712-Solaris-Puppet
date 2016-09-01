@@ -1,6 +1,6 @@
-# 001-simple-site.pp
+# 001-simple/site.pp
 $content='
-# simple-site.pp
+# 001-simple-site.pp
 PROMPT="[%F{white}%n%f@%F{white}%m%f(${ret_status}) %F{white}%T%f %l]
 <%/>
 %F{red}[%h]%f %{$reset_color%}"

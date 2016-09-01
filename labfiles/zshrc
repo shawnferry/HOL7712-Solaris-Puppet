@@ -2,13 +2,7 @@ PROMPT="[%F{white}%n%f@%F{white}%m%f(${ret_status}) %F{white}%T%f %l]
 <%/>
 %F{red}[%h]%f %{$reset_color%}"
 
-# $1 = type; 0 - both, 1 - tab, 2 - title
-# rest = text
-setTerminalText () {
-    # echo works in bash & zsh
-    local mode=$1 ; shift
-    echo -ne "\033]$mode;$@\007"
+compdef '_files -W /root/HOL7712-Solaris-Puppet/manifests -F site-copy.pp' lab_copy
+lab_copy () {
+  puppet apply -t /root/HOL7712-Solaris-Puppet/site-copy.pp --tags $1
 }
-stt_both  () { setTerminalText 0 $@; }
-stt_tab   () { setTerminalText 1 $@; }
-stt_title () { setTerminalText 2 $@; }

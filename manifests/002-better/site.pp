@@ -1,4 +1,4 @@
-# 002-simple-site.pp
+# 002-better/site.pp
 
 # Copy zshrc from the lab module instead of using the 'content' parameter
 file { '/root/.zshrc':
