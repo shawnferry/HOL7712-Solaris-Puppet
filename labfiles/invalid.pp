@@ -13,9 +13,11 @@ ensure => present;
 # puppet-lint also emits warnings for the puppet style guide
 # After you fix the unparsable syntax error you will get a warning.
 exec { 'foo':
-  foo => 'bar',
-  baz => 'quux',
-  other_foo_var => 'error',
-  # Add another variable here
+  command => '/bin/touch /tmp/foo',
+  cwd     => '/tmp',
+  try_sleep => '10',
+  # Add another parameter above this line
+  # e.g. creates => '/tmp/foo'
+  # You must type it
   ;
 }

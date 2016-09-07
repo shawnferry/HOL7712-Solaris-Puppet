@@ -1,0 +1,10 @@
+lab::homedir: '/root'
+lab::sources: '/root/HOL7712-Solaris-Puppet'
+lab::repo::dir: /repositories
+lab::pkg:
+  solaris:
+    publisher: solaris
+    origin: http://ipkg.us.oracle.com/solaris12/minidev/
+  lab:
+    publisher: lab
+    origin: /repositories/publisher/lab

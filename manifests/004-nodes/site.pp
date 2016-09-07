@@ -4,40 +4,42 @@
 # classes must be defined in their own directories the lab
 # configuration of syntastic disables that check
 
+
 # Define a base class for all nodes
-class base {
+class lab::base {
+
+  $lab_homedir = hiera('/root','lab::homedir')
+  $lab_pkg = hiera('lab::pkg')
+
 # Copy zshrc from the lab 'module'
-  file { '/root/.zshrc':
+  file { "${lab_homedir}/.zshrc":
     ensure => present,
     source => 'puppet:///modules/lab/zshrc';
   }
 
 # Configure the publisher for the lab
-  pkg_publisher { 'solaris':
-    #origin      => ['http://pkg.oracle.com/solaris/release/'],
-    origin      => ['http://ipkg.us.oracle.com/solaris12/minidev/'],
+  pkg_publisher { $lab_pkg['lab']['publisher']:
+    origin      => $lab_pkg['lab']['origin']
   }
 }
 
 # Puppet master specific resources
-class master {
-  package { 'puppetlabs-mysql':
-    ensure => present,
+class lab::master {
+  $lab_sources = hiera('lab::sources')
+  pkg_publisher { $lab_pkg['solaris']['publisher']:
+    origin      => $lab_pkg['solaris']['origin']
+  }
+
+  file { '/var/lib/hiera':
+    source  => "${lab_sources}/hiera",
+    recurse => true
   }
 }
 
-
 # Define resources for our webserver
-class webserver {
+class lab::webserver {
   # Use the apache module to install apache
   class { 'apache': }
-
-  # Use the mysql module to install mysql
-  include '::mysql::server'
-  class { '::mysql::server':
-    root_password           => 'strongpassword',
-    remove_default_accounts => true,
-  }
 }
 
 # Node statements in site.pp is not the recommended way to classify nodes it
@@ -48,14 +50,14 @@ class webserver {
 # additional nodes this is identical to the previous configurations. i.e. all
 # nodes have the same resources applied
 node default {
-  include base
+  include lab::base
 }
 
 node /puppet-lab.*/ {
-  include base
+  include lab::base
 }
 
 node /www.*/ {
-  include base
-  include webserver
+  include lab::base
+  include lab::webserver
 }

@@ -1,13 +1,12 @@
-# 003-publisher-site.pp
+# 003-publisher/site.pp
 
-# Copy zshrc from the lab module instead of using the 'content' parameter
+# Copy zshrc from the lab module
 file { '/root/.zshrc':
   ensure => present,
   source => 'puppet:///modules/lab/zshrc';
 }
 
 # Configure the publisher for the lab
-pkg_publisher { 'solaris':
-  #origin      => ['http://pkg.oracle.com/solaris/release/'],
-  origin      => ['http://ipkg.us.oracle.com/solaris12/minidev'],
+pkg_publisher { 'lab':
+  origin      => ['/repositories/publisher/lab'],
 }

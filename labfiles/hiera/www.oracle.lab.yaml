@@ -1,0 +1,4 @@
+lab::pkg:
+  lab:
+    publisher: lab
+    origin: http://puppet/repositories/publisher/lab

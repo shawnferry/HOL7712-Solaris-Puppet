@@ -1,0 +1,3 @@
+lab::homedir: '/root'
+lab::sources: '/root/HOL7712-Solaris-Puppet'
+lab::repo::dir: /repositories
