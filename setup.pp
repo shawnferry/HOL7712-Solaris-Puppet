@@ -145,3 +145,12 @@ $env = [
     require => Exec['Add Lab Publisher'],
     tag     => ['pre'];
   }
+
+  # Copy basic hiera data files
+  file {
+    '/var/lib/hiera/defaults.yaml':
+    source => "${labdir}/labfiles/hiera/defaults.yaml";
+
+    '/var/lib/hiera/global.yaml':
+    source => "${labdir}/labfiles/hiera/global.yaml"
+  }

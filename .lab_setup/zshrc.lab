@@ -1,0 +1,15 @@
+setopt prompt_subst
+PROMPT='[%F{white}%n%f@%F{white}%m%f(${ret_status}) %F{white}%T%f %l]
+<%/>
+%F{red}[$example]%f %{$reset_color%}'
+
+[[ -n $example ]] || export example=1
+
+next_example () {
+export example=$((example + 1))
+}
+set_example () {
+: ${1?:Example must be provided}
+echo $1
+export example=$1
+}
