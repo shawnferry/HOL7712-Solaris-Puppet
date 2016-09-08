@@ -6,3 +6,11 @@ compdef '_files -W /root/HOL7712-Solaris-Puppet/manifests -F site-copy.pp' lab_c
 lab_copy () {
   puppet apply -t /root/HOL7712-Solaris-Puppet/site-copy.pp --tags $1
 }
+
+# build and install lab module
+lab_build () {
+	( cd /root/*-lab
+	puppet module build
+	puppet module install --force ./pkg/*-lab-0.1.0.tar.gz
+	)
+}
