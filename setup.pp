@@ -127,10 +127,9 @@ $env = [
 
   # Add the lab publisher
   exec { 'Add Lab Publisher':
-    command => "/usr/bin/pkgrepo add-publisher -s ${local_repo_dir} lab",
-    creates => "${local_repo_dir}/publisher/lab",
-    require => Exec['Create repo'],
-    tag     => ['pre'];
+    command => "/usr/bin/pkgrepo add-publisher -s ${local_repo_dir} solaris",
+    creates => "${local_repo_dir}/publisher/solaris",
+    require => Exec['Create repo']
   }
 
   exec { 'Recv packages':
@@ -140,7 +139,7 @@ $env = [
     -s ${local_repo_origin} \
     ${mirror_pacakges}
     ",
-    unless => "/usr/bin/pkgrepo list -s file:///${local_repo_dir}/publisher/lab \
+    unless => "/usr/bin/pkgrepo list -s file:///${local_repo_dir}/publisher/solaris \
       ${mirror_pacakges} > /dev/null 2>&1",
     require => Exec['Add Lab Publisher'],
     tag     => ['pre'];

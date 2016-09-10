@@ -1,25 +1,51 @@
 $labfiles  ='/root/HOL7712-Solaris-Puppet'
 $manifests ="${labfiles}/manifests"
+$site_pp = '/etc/puppet/manifests/site.pp'
 
-# Ensure rsync is installed. This uses the
-# puppetlabs-rsync module
-class { 'rsync': package_ensure => present }
+notice("Copying lab files for ${tag}")
 
-# Set default parameters for Rsync::Get
-Rsync::Get {
-      recursive => true,
-      path      => '/etc/puppet/manifests'
-}
+# Copy files around with rsync
+  # Ensure rsync is installed. This uses the
+  # puppetlabs-rsync module
+  class { 'rsync': package_ensure => present }
 
-# Copy the set of manifests to /etc/puppet/manifests
-# without a tag supplied via --tags all resources will be executed
-# You probably don't want to do that but nothing is preventing you from doing
-# it
+  # Set default parameters for Rsync::Get
+  Rsync::Get {
+    recursive => true,
+    path      => '/etc/puppet/manifests',
+    exclude   => 'site.pp',
+    source    => "${::manifests}/${::tag}/",
+    tag       => [$::tag]
+  }
 
-rsync::get {
-  '001-simple': source => "${manifests}/001-simple/";
-  '002-better': source => "${manifests}/002-better/";
-  '003-publisher': source => "${manifests}/003-publisher/";
-  '004-nodes': source => "${manifests}/004-nodes/";
-  '005-webserver': source => "${manifests}/005-webserver/";
-}
+  # Copy the set of manifests to /etc/puppet/manifests
+  # without a tag supplied via --tags all resources will be executed
+  # You probably don't want to do that but nothing is preventing you from doing
+  # it
+
+  rsync::get { $::tag: }
+  # This ends up looking something like
+  # rsync::get { '001-simple':
+  #   recursive => true,
+  #   path      => '/etc/puppet/manifests',
+  #   exclude   => 'site.pp',
+  #   source => "${::manifests}/001-simple/"; }
+
+  Concat {
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0644',
+    tag    => [$::tag]
+  }
+
+  concat { $::site_pp: }
+
+  # Set the default target for Concat fragment
+  Concat::Fragment {
+    target => $::site_pp,
+    source => "${::manifests}/${::tag}/site.pp",
+    tag    => [$::tag]
+  }
+
+  # Add additional tags to build up file...probably
+  concat::fragment { $::tag: }

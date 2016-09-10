@@ -8,7 +8,7 @@
 # Define a base class for all nodes
 class lab::base {
 
-  $lab_homedir = hiera('/root','lab::homedir')
+  $lab_homedir = hiera('lab::homedir', '/root')
   $lab_pkg = hiera('lab::pkg')
 
 # Copy zshrc from the lab 'module'
@@ -17,18 +17,14 @@ class lab::base {
     source => 'puppet:///modules/lab/zshrc';
   }
 
-# Configure the publisher for the lab
-  pkg_publisher { $lab_pkg['lab']['publisher']:
-    origin      => $lab_pkg['lab']['origin']
+  pkg_publisher { $lab_pkg['solaris']['publisher']:
+    origin      => $lab_pkg['solaris']['origin']
   }
 }
 
 # Puppet master specific resources
 class lab::master {
   $lab_sources = hiera('lab::sources')
-  pkg_publisher { $lab_pkg['solaris']['publisher']:
-    origin      => $lab_pkg['solaris']['origin']
-  }
 
   file { '/var/lib/hiera':
     source  => "${lab_sources}/hiera",
