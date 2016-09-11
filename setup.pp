@@ -8,7 +8,9 @@ $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 
 # Pacakges to mirror
 $mirror_pacakges = 'git \
+release/evaluation \
 links \
+library/libevent \
 puppetlabs-apache \
 editor/vim \
 ilb \
@@ -129,7 +131,7 @@ $env = [
   exec { 'Add Lab Publisher':
     command => "/usr/bin/pkgrepo add-publisher -s ${local_repo_dir} solaris",
     creates => "${local_repo_dir}/publisher/solaris",
-    require => Exec['Create repo']
+    require => Exec['Create repo'];
   }
 
   exec { 'Recv packages':
@@ -139,8 +141,9 @@ $env = [
     -s ${local_repo_origin} \
     ${mirror_pacakges}
     ",
-    unless => "/usr/bin/pkgrepo list -s file:///${local_repo_dir}/publisher/solaris \
-      ${mirror_pacakges} > /dev/null 2>&1",
+    unless  => "/usr/bin/pkgrepo list -s \
+      file:///${local_repo_dir}/publisher/solaris ${mirror_pacakges} \
+      > /dev/null 2>&1",
     require => Exec['Add Lab Publisher'],
     tag     => ['pre'];
   }

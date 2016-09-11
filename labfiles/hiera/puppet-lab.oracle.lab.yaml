@@ -1,0 +1,4 @@
+lab::pkg:
+  solaris:
+    publisher: solaris
+    origin: /repositories/publisher/solaris

@@ -5,7 +5,7 @@ PROMPT="[%F{white}%n%f@%F{white}%m%f(${ret_status}) %F{white}%T%f %l]
 compdef '_files -W /root/HOL7712-Solaris-Puppet/manifests -F site-copy.pp' lab_copy
 lab_copy () {
 # This is getting towards magic and inscrutable meta programming
-FACTER_tag=$1 puppet apply /root/HOL7712-Solaris-Puppet/site-copy.pp --tags $1
+FACTER_example=$1 puppet apply --parser=future /root/HOL7712-Solaris-Puppet/lab_copy.pp --tags $*
 }
 
 # build and install lab module

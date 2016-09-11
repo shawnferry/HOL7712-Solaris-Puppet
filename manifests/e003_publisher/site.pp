@@ -1,15 +1,6 @@
-# 002-better/site.pp
-
-# Copy zshrc from the lab module instead of using the 'content' parameter
-file { '/root/.zshrc':
-  ensure => present,
-  owner  => 'root',
-  group  => 'root',
-  source => 'puppet:///modules/lab/zshrc';
-}
-
-# 003-publisher/site.pp
-# Serve a pre-existing solaris package repo on port 1111
+######
+# e003_publisher/site.pp
+######
 
 # Create the repositories filesystem and mount it at /repositories
 # In the lab /rpool/repositories will already exist this will only change the
@@ -30,6 +21,7 @@ pkg_publisher { 'solaris':
 }
 
 # Configure pkg.repod to serve our partial copy of the repo
+# By default pkg/server:default runs on port 80
 svccfg {
   # See svc:/application/pkg/mirror:default
   # for an automated service to maintain a true local mirror
@@ -37,14 +29,12 @@ svccfg {
     value   => '/repositories/publisher/solaris',
     require => Pkg_publisher['solaris'],
     notify  => Service['svc:/application/pkg/server:default'];
-
-  # port 80 is the default nothing will change here
-  'svc:/application/pkg/server:default/:properties/pkg/port':
-    value   => '80',
-    require => Pkg_publisher['solaris'],
-    notify  => Service['svc:/application/pkg/server:default'];
 }
 
+# Start the service
 service { 'svc:/application/pkg/server:default':
   ensure => running
 }
+
+# View the list of packages in the local repository
+# pkgrepo -s http://localhost/solaris list

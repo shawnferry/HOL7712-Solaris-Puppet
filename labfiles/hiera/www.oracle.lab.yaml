@@ -1,4 +1,4 @@
 lab::pkg:
-  lab:
-    publisher: lab
-    origin: http://puppet/repositories/publisher/lab
+  solaris:
+    publisher: solaris
+    origin: http://puppet/repositories/publisher/solaris

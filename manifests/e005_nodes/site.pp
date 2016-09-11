@@ -1,4 +1,6 @@
-# 005-webserver/site.pp
+######
+# e005_nodes/site.pp
+######
 
 # This is not acceptable syntax for a normal puppet class
 # classes must be defined in their own directories the lab
@@ -8,7 +10,7 @@
 # Define a base class for all nodes
 class lab::base {
 
-  $lab_homedir = hiera('lab::homedir','/root')
+  $lab_homedir = hiera('lab::homedir', '/root')
   $lab_pkg = hiera('lab::pkg')
 
 # Copy zshrc from the lab 'module'
@@ -20,37 +22,15 @@ class lab::base {
   pkg_publisher { $lab_pkg['solaris']['publisher']:
     origin      => $lab_pkg['solaris']['origin']
   }
-
 }
 
 # Puppet master specific resources
 class lab::master {
+  $lab_sources = hiera('lab::sources')
 
-  package { 'puppetlabs-apache':
-    ensure => present
-  }
-}
-
-# Create a virtual host to serve the lab book content; use a port only
-# definiton instead of a name based virtual host to avoid dns related
-# complications
-class lab::book inherits lab::webserver {
-
-  # Listen on port 81
-  apache::listen { '81': }
-
-  # Create an htdocs directory for the lab book
-  file {
-    '/var/apache2/lab': ensure => directory;
-    '/var/apache2/lab/htdocs':
-      ensure  => present,
-      source  => 'puppet:///modules/lab/book',
-      recurse => true;
-  }
-
-  # Set a port based virtual host
-  apache::vhost { '_default_:81':
-    docroot => '/var/apache2/lab/htdocs'
+  file { '/var/lib/hiera':
+    source  => "${lab_sources}/hiera",
+    recurse => true
   }
 }
 
@@ -78,5 +58,4 @@ node /puppet-lab.*/ {
 node /www.*/ {
   include lab::base
   include lab::webserver
-  #include lab::book
 }
