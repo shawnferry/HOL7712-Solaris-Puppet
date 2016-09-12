@@ -6,12 +6,6 @@
 # both of which use port 80 by default. We will change the port on
 # pkg/server:default and create a proxy in Apache
 
-#XXX
-# create repo-docroot
-# change index.html to show it's a repo
-# add repo entry to /etc/hosts
-# fix or remove disabled vhost settings
-
 svccfg {
   # Set the port for pkg/server:default to 8080
   'svc:/application/pkg/server:default/:properties/pkg/port':
@@ -27,16 +21,29 @@ svccfg {
     notify  => Service['svc:/application/pkg/server:default'];
 }
 
+# Create htdocs
+file { '/var/apache2/2.4/repo-htdocs':
+  ensure => directory,
+  before => Apache::Vhost['repo'],
+}
+
+# Add an index.html
+file { '/var/apache2/2.4/repo-htdocs/index.html':
+  content => "It's a Repo!"
+}
+
+host { 'puppet-labs.oracle.lab':
+  # Where did ipaddres come from ... facter
+  ip           => $::ipaddress,
+  host_aliases => ['puppet-lab', 'puppet', 'repo']
+}
+
 # See Oracle Docs for 'Depot Server Apache Configuration'
 apache::vhost { 'repo':
   docroot               => '/var/apache2/2.4/repo-htdocs',
   redirect_source       => ['/solaris'],
   redirect_dest         => ['http://localhost:8080/solaris/'],
   allow_encoded_slashes => 'nodecode',
-# keepalive              => 'on',
-# max_keepalive_requests => '10000',
-#  proxy_timeout         => '30',
-#  proxy_requests        => 'off',
   filters               => [
     'FilterDeclare  COMPRESS',
     'FilterProvider COMPRESS DEFLATE "%{Content_Type} = \'text/html\'"',
