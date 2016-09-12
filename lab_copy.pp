@@ -87,4 +87,11 @@ class e005_reverse_proxy {
   }
 }
 
+# Copy example
+class e006_nodes {
+  concat::fragment { 'e006_nodes':
+    source => "${::manifests}/e006_nodes/site.pp",
+  }
+}
+
 class { $::example: }
