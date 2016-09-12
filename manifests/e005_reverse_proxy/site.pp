@@ -16,7 +16,7 @@ svccfg {
 
   'svc:/application/pkg/server:default/:properties/pkg/proxy_base':
   # See svc:/application/pkg/mirror:default
-    value   => 'http://puppet:8080/solaris',
+    value   => 'http://repo/publisher',
     require => Pkg_publisher['solaris'],
     notify  => Service['svc:/application/pkg/server:default'];
 }
@@ -41,8 +41,8 @@ host { 'puppet-labs.oracle.lab':
 # See Oracle Docs for 'Depot Server Apache Configuration'
 apache::vhost { 'repo':
   docroot               => '/var/apache2/2.4/repo-htdocs',
-  redirect_source       => ['/solaris'],
-  redirect_dest         => ['http://localhost:8080/solaris/'],
+  redirect_source       => ['/publisher'],
+  redirect_dest         => ['http://localhost:8080/publisher'],
   allow_encoded_slashes => 'nodecode',
   filters               => [
     'FilterDeclare  COMPRESS',
@@ -52,7 +52,7 @@ apache::vhost { 'repo':
     'FilterProvider COMPRESS DEFLATE "%{Content_Type} = \'text/plain\'"',
   ],
   proxy_pass            => [
-    { 'path'     => '/solaris',
+    { 'path'     => '/publisher',
       'url'      => 'http://localhost:8080',
       'params'   => {'max'                         => '200'},
       'keywords' => ['nocanon']
