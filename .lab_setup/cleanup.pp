@@ -31,7 +31,8 @@ $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 
   # Create the manifests directory
   file { '/etc/puppet/manifests':
-    ensure => absent
+    ensure => absent,
+    force  => true
   }
 
   # Copy basic hiera data files

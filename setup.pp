@@ -8,7 +8,6 @@ $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 
 # Pacakges to mirror
 $mirror_pacakges = 'git \
-release/evaluation \
 links \
 library/libevent \
 puppetlabs-apache \
@@ -136,7 +135,7 @@ $env = [
 
   exec { 'Recv packages':
     command => "/usr/bin/pkgrecv \
-    -d ${local_repo_dir}/publisher/lab \
+    -d ${local_repo_dir}/publisher/solaris \
     -m latest \
     -s ${local_repo_origin} \
     ${mirror_pacakges}
