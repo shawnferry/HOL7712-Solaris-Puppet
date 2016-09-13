@@ -49,25 +49,20 @@ class lab::master {
     ensure => present
   }
 
+}
+
+  # configuration for the package server
+  class lab::pkg_server {
+    # The package server doesn't require apache. However, our reverse
+    # proxy configuration does. Include webserver to get our baseline
+    # webserver configuration.
+    include lab::webserver
+
   # Create and mount the repo filesystem and mount it
   zfs { 'rpool/repositories':
     ensure     => present,
     mountpoint => '/repositories';
   }
-
-  ### This should happen elsewhere/earlier
-  #  file { '/var/lib/hiera':
-  #    source  => "${lab_sources}/hiera",
-  #    recurse => true
-  #  }
-  }
-
-  # configuration for the package server
-  class lab::pkg_server {
-    # The package server doesn't require apache. However, our reverse proxy
-    # configuration does. Include webserver to get our baseline webserver
-    # configuration.
-    include lab::webserver
 
     # Configure pkg.repod to serve our partial copy of the repo
     # By default pkg/server:default runs on port 80
@@ -78,14 +73,7 @@ class lab::master {
         value   => '/repositories/publisher/solaris',
         require => Pkg_publisher['solaris'],
         notify  => Service['svc:/application/pkg/server:default'];
-    }
 
-    # Start the service
-    service { 'svc:/application/pkg/server:default':
-      ensure => running
-    }
-
-    svccfg {
       # Set the port for pkg/server:default to 8080
       'svc:/application/pkg/server:default/:properties/pkg/port':
         # See svc:/application/pkg/mirror:default
@@ -96,9 +84,15 @@ class lab::master {
       # Set the proxy_base
       'svc:/application/pkg/server:default/:properties/pkg/proxy_base':
         # See svc:/application/pkg/mirror:default
-        value   => 'http://repo:8080/solaris',
+        value   => 'http://repo/publisher',
         require => Pkg_publisher['solaris'],
         notify  => Service['svc:/application/pkg/server:default'];
+    }
+    }
+
+    # Start the service
+    service { 'svc:/application/pkg/server:default':
+      ensure => running
     }
 
     # Create htdocs
@@ -122,8 +116,8 @@ class lab::master {
     # See Oracle Docs for 'Depot Server Apache Configuration'
     apache::vhost { 'repo':
       docroot               => '/var/apache2/2.4/repo-htdocs',
-      redirect_source       => ['/solaris'],
-      redirect_dest         => ['http://localhost:8080/solaris/'],
+      redirect_source       => ['/publisher'],
+      redirect_dest         => ['http://localhost:8080/publisher'],
       allow_encoded_slashes => 'nodecode',
       filters               => [
         'FilterDeclare  COMPRESS',
@@ -134,7 +128,7 @@ class lab::master {
       ],
       proxy_pass            => [
         {
-          'path'     => '/solaris',
+          'path'     => '/publisher',
           'url'      => 'http://localhost:8080',
           'params'   => {'max'                   => '200'},
           'keywords' => ['nocanon']
@@ -143,7 +137,6 @@ class lab::master {
 
     }
 
-  }
 
   # basic configuration for webservers
   class lab::webserver {
@@ -176,6 +169,7 @@ class lab::master {
 
     node /puppet-lab.*/ {
       include lab::common
+      include lab::pkg_server
     }
 
     node /www.*/ {
