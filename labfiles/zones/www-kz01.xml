@@ -5,30 +5,7 @@
   <service version="1" type="service" name="system/identity">
     <instance enabled="true" name="node">
       <property_group type="application" name="config">
-        <propval type="astring" name="nodename" value="myzone"/>
-      </property_group>
-    </instance>
-  </service>
-  <service version="1" type="service" name="network/install">
-    <instance enabled="true" name="default">
-      <property_group type="application" name="install_ipv6_interface">
-        <propval type="astring" name="stateful" value="yes"/>
-        <propval type="astring" name="address_type" value="addrconf"/>
-        <propval type="astring" name="name" value="net0/v6"/>
-        <propval type="astring" name="stateless" value="yes"/>
-      </property_group>
-      <property_group type="application" name="install_ipv4_interface">
-        <propval type="net_address_v4" name="static_address" value="10.80.228.207/24"/>
-        <propval type="astring" name="name" value="net0/v4"/>
-        <propval type="astring" name="address_type" value="static"/>
-        <propval type="net_address_v4" name="default_route" value="10.80.228.1"/>
-      </property_group>
-    </instance>
-  </service>
-  <service version="1" type="service" name="network/physical">
-    <instance enabled="true" name="default">
-      <property_group type="application" name="netcfg">
-        <propval type="astring" name="active_ncp" value="DefaultFixed"/>
+        <propval type="astring" name="nodename" value="www-kz01"/>
       </property_group>
     </instance>
   </service>

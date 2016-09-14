@@ -3,4 +3,4 @@ lab::pkg:
     publisher: solaris
     origin:
             - /repositories/publisher/solaris
-            #- http://ipkg.us.oracle.com/solaris12/minidev
+            #- http://ips-repository

@@ -19,7 +19,7 @@ rsync'
 # This mountpoint changes during the lab
 $local_repo_dir='/rpool/repositories'
 # Where can we copy packages from initially?
-$local_repo_origin='http://ipkg.us.oracle.com/solaris12/minidev/'
+$local_repo_origin='http://ips-repository'
 
 # If you need to define proxies here to reach outside resources
 # you must also add them to your environemnt to install gems via the
