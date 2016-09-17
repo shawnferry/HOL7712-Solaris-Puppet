@@ -2,13 +2,20 @@
 # e007_www_zone/site.pp
 ######
 
-class 'lab::www_zone01' {
-	zone { 'www-kz01':
-		 ensure         => 'running',
-		 zonecfg_export => 'puppet:///modules/lab/zones/www-kz.zcfg',
-		 config_profile => 'puppet:///modules/lab/zones/www-kz01.xml'
-	}
+# Create the zone on all www hosts
+node /www.*/ {
+  # Copy the zone configuration files
+  file {
+    "/system/zones/www-zone.zcfg":
+    ensure => present,
+    source => 'puppet:///modules/lab/zones/www-zone.zcfg';
+  "/system/zones/www-zone01.xml":
+    ensure => present,
+    source => 'puppet:///modules/lab/zones/www-zone01.xml';
+  } -> # Files must be copied before they are used
+  zone { 'www-zone01':
+    ensure         => 'running',
+    zonecfg_export => '/system/zones/www-zone.zcfg',
+    config_profile => '/system/zones/www-zone01.xml'
+  }
 }
-
-# Apply this class to the www node classification as
-# include 'lab::www_zone01'

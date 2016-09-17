@@ -94,4 +94,11 @@ class e006_nodes {
   }
 }
 
+# Copy example
+class e007_www_zone {
+  concat::fragment { 'e007_www_zone':
+    source => "${::manifests}/e007_www_zone/site.pp",
+  }
+}
+
 class { $::example: }

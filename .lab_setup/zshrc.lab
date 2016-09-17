@@ -1,15 +1,16 @@
 setopt prompt_subst
-PROMPT='[%F{white}%n%f@%F{white}%m%f(${ret_status}) %F{white}%T%f %l]
-<%/>
-%F{red}[$example]%f %{$reset_color%}'
+PROMPT='[%F{white}%n%f@%F{white}%m%f] <%/>
+%F{red}[${example}-${ex_num}]%f %{$reset_color%}'
 
-[[ -n $example ]] || export example=1
+[[ -n $ex_num ]] || export ex_num=1
 
 next_example () {
-export example=$((example + 1))
+export ex_num=$((ex_num + 1))
 }
 set_example () {
 : ${1?:Example must be provided}
-echo $1
 export example=$1
+if [ -n $2 ]; then
+	export ex_num=$2
+fi
 }
