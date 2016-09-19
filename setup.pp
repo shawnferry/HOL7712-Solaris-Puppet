@@ -6,6 +6,11 @@
 $lab_homedir = '/root'
 $labdir = "${lab_homedir}/HOL7712-Solaris-Puppet"
 
+exec { 'update-lab':
+  command => "/usr/bin/git pull",
+  cwd     => $labdir;
+}
+
 # Pacakges to mirror
 $mirror_pacakges = 'git \
 links \
